@@ -19,13 +19,10 @@ const savedSettings = throttle(() => {
   localStorage.setItem(KEY_STORAGE, JSON.stringify(objects));
 }, 500);
 
-inputEmail.addEventListener('input', savedSettings);
-inputMessage.addEventListener('input', savedSettings);
-
+form.addEventListener('input', savedSettings);
 form.addEventListener('submit', event => {
   event.preventDefault();
-  inputEmail.removeEventListener('input', savedSettings);
-  inputMessage.removeEventListener('input', savedSettings);
+  form.removeEventListener('input', savedSettings)
   localStorage.removeItem(KEY_STORAGE);
   inputEmail.value = '';
   inputMessage.value = '';
