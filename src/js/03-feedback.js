@@ -8,7 +8,7 @@ const KEY_STORAGE = 'feedback-form-state';
 const inputValue = localStorage.getItem(KEY_STORAGE);
 
 
-if (inputValue !== null && inputValue !== '') {
+if (inputValue) {
   const parseSetting = JSON.parse(inputValue);
   inputEmail.value = parseSetting.email;
   inputMessage.value = parseSetting.message;
@@ -27,8 +27,9 @@ function onChangeHandler(event) {
 function onSubmitHandler(event) {
   event.preventDefault();
   console.log(objects);
-  localStorage.setItem(KEY_STORAGE, '');
+  localStorage.removeItem(KEY_STORAGE);
   event.currentTarget.reset();
+  objects = {};
 }
 
 form.addEventListener('input', throttle(onChangeHandler, 500));
