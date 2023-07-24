@@ -13,7 +13,6 @@ const { email, message } = refs.form.elements;
 refs.form.addEventListener('submit', onSubmitClickBtn);
 refs.form.addEventListener('input', throttle(onInputSubmit, 500));
 
-
 function onSubmitClickBtn(evt) {
   evt.preventDefault();
 
@@ -37,5 +36,4 @@ function populateTextarea() {
     message.value = feedbackForm.message || '';
   }
 }
-
 populateTextarea();
