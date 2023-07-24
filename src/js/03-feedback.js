@@ -3,37 +3,39 @@ import throttle from 'lodash.throttle';
 const refs = {
   form: document.querySelector('.feedback-form'),
 };
+
 const STORAGE_KEY = 'feedback-form-state';
 
-const feedbackForm = {};
+let feedbackForm = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+
+const { email, message } = refs.form.elements;
 
 refs.form.addEventListener('submit', onSubmitClickBtn);
-refs.form.addEventListener('input', onInputSubmit);
+refs.form.addEventListener('input', throttle(onInputSubmit, 500));
 
 
 function onSubmitClickBtn(evt) {
   evt.preventDefault();
-  localStorage.removeItem(STORAGE_KEY);  
+
+  if (!email.value || !message.value) return alert('Please fill in all the fields!');
+
+  console.log(feedbackForm);
+
   evt.target.reset();
+  localStorage.removeItem(STORAGE_KEY);
+  feedbackForm = {};
 }
 
 function onInputSubmit(evt) {
-  feedbackForm[evt.target.name] = evt.target.value;
+  feedbackForm[evt.target.name] = evt.target.value.trim();
   localStorage.setItem(STORAGE_KEY, JSON.stringify(feedbackForm));
-  console.log(feedbackForm);
 }
 
 function populateTextarea() {
-  let savedMessage = JSON.parse(localStorage.getItem(STORAGE_KEY));
-  const { email, message } = refs.form.elements;
-  if (savedMessage) {
-    email.value = savedMessage.email;
-    message.value = savedMessage.message;
+  if (feedbackForm) {
+    email.value = feedbackForm.email || '';
+    message.value = feedbackForm.message || '';
   }
 }
 
 populateTextarea();
-
-
-
-
